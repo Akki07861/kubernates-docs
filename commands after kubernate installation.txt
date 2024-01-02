@@ -1,0 +1,96 @@
+>>> nano nginxpod.yml
+- -----------------------------
+copy this,
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: mynginxpod
+spec:
+  containers:
+   - name: mynginxcontainer
+     image: nginx
+     ports:
+      - containerPort: 80
+
+--------------------------------
+>>> kubectl apply -f nginxpod.yml
+>>> kubectl get pods
+>>> kubectl describe pod mynginxpod
+
+now for getting inside of pod container
+--------------------------------------------------------------------------------------
+(kubectl exec -it mynginxpod -- /bin/bash
+Error from server: error dialing backend: dial tcp 172.31.31.129:10250: i/o timeout
+[root@ip-172-31-94-229 ec2-user]# )=(go and change security group)
+
+>>> kubectl exec -it mynginxpod -- /bin/bash
+root@mynginxpod:/# ls
+                # curl http://localhost
+exit
+
+>>> kubectl delete pod mynginxpod
+----------------------------------------------------------------------------------------
+
+
+number 2 pod creation.
+
+>>> nano myservice.yml
+- ---------------
+copy this code:
+apiVersion: v1
+kind: Service
+metadata:
+ name: mynginxservice
+spec:
+  selector:
+      app: web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
+------------------
+now create ,
+
+>>> nano nginxpod.yml
+---------------------------------------------
+copy this:
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: mynginxpod
+ labels:
+   app: web
+spec:
+  containers:
+   - name: mynginxcontainer
+     image: nginx
+     ports:
+      - containerPort: 80
+---------------------------------------------
+lets launch;
+>>> kubectl apply -f myservice.yml
+
+>>> kubectl apply -f nginxpod.yml
+
+****important too see****
+now we got 
+----
+[root@ip-172-31-94-229 ec2-user]# kubectl get service
+NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+kubernetes       ClusterIP   10.96.0.1        <none>        443/TCP        4h7m
+mynginxservice   NodePort    10.110.248.150   <none>        80:30571/TCP   2m58s
+[root@ip-172-31-94-229 ec2-user]# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+mynginxpod   1/1     Running   0          2m55s
+[root@ip-172-31-94-229 ec2-user]#
+----
+go to worker nodes security group add rule tcp 30571 anywhere which created by NodePort and save rule.
+ 
+copy public ip of worker node in borwse as like
+       http://34.207.119.175:30571/
+make sure to add :NodePort port_id with ec2 public ip.
+
+----

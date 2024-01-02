@@ -1,0 +1,6 @@
+kubeadm join 172.31.94.229:6443 --token ut6830.i82exfl1arx4s16z --discovery-token-ca-cert-hash sha256:17a81398efdf2056d081b0f1eca2c623bc7f51780aaff55187417f2941f7edc8
+
+new:
+
+kubeadm join 172.31.82.39:6443 --token tp43dh.esah1gmnezcyqlju \
+        --discovery-token-ca-cert-hash sha256:f84d1845b2549938368db3bc3f88f422d83b402445fb69fbdec68d4bd26cdd02

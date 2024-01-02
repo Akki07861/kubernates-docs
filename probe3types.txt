@@ -1,0 +1,82 @@
+
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+
+   name: mydeployment
+
+spec:
+
+   replicas: 3
+
+   selector:
+
+     matchLabels:
+
+       app: web
+
+   template:
+
+      metadata:
+
+         labels:
+
+            app: web
+
+      spec:
+
+         containers:
+
+             - name: nginxcontainer
+
+               image: nginx
+
+               ports:
+
+                 - containerPort: 80
+
+               livenessProbe:
+
+                 httpGet:
+
+                   path: /index.html
+
+                   port: 80
+
+                 periodSeconds: 5
+
+                 failureThreshold: 2
+
+                 initialDelaySeconds: 5
+
+               readinessProbe:
+
+                 httpGet:
+
+                   path: /index.html
+
+                   port: 80
+
+                 periodSeconds: 5
+
+                 initialDelaySeconds: 5
+
+                 failureThreshold: 2
+
+               startupProbe:
+
+                   exec:
+
+                     command:
+
+                       - cat
+
+                       - /usr/share/nginx/html/index.html
+
+                   periodSeconds: 5
+
+                   failureThreshold: 24
+
+                   initialDelaySeconds: 5

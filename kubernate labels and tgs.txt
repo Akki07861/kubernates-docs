@@ -1,0 +1,85 @@
+ 
+commands for the creation and naming pods:
+
+cp nginxpod.yml nginxpod1.yml
+cp nginxpod.yml nginxpod2.yml
+ls
+nano nginxpod1.yml
+(change tha name and tag in metadata)
+
+nano nginxpod2.yml
+(change the name for pod only rest is same )
+ 
+ ------------------ now create the pods -------------------------
+
+kubectl apply -f nginxpod1.yml
+kubectl apply -f nginxpod2.yml
+
+kubectl get pods
+
+kubctl get pods --show-labels
+
+
+-------------------------------------- namespace -----------------------
+
+copy file
+mynginx
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mynginxpodnode
+  labels:
+    app: web
+spec:
+   nodeSelector:
+        gpu: "true"
+   containers:
+      - name: mynginxcontainer
+        image: nginx
+        ports:
+          - containerPort: 80
+
+..>>>
+
+kubectl label node ip-172-31-38-101.ec2.internal cpu=true
+ kubectl get nodes
+ kubectl get nodes -o wide
+ kubectl get pods -o wide
+kubectl get nodes --show-labels
+ kubectl get nodes -l cpu=true
+ kubectl get nodes -l gpu=true
+kubectl get pods -n kube-system
+kubectl get pods --namespace kube-system
+
+......................
+
+creating a namespace ------------------------
+
+kubectl create namespace myspace
+kubectl get ns/(namespace)
+kubectl delete pods --all
+
+ kubectl apply -f nginxpod.yml -n myspace
+
+ kubectl get pods -n myspace
+
+(command for pod deletion on the namespace)
+ kubectl delete pod nginxpod -n myspace
+
+---------------
+cretaing namespace with file space.yml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: customspace
+----------------------
+
+changing default namespace 
+
+kubectl config set-context --current --namespace=default
+
+
+
+
+

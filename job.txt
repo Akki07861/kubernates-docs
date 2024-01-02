@@ -1,0 +1,20 @@
+job:
+ copy this in job.yml
+
+----------------------------
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jobwala
+spec:
+  template:
+      metadata:
+        labels:
+          app: web
+      spec:
+         restartPolicy: OnFailure
+         containers:
+           - name: main
+             image: liksa/batch-job
+----------------------------------
+make sure to have app : web service is on.

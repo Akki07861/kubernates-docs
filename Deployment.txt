@@ -1,0 +1,66 @@
+replica set :
+
+-----------
+ replicasetwala.yml
+ 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: myreplica
+spec:
+   replicas: 3
+   selector:
+     matchLabels:
+       app: web
+   template:
+      metadata:
+         labels:
+            app: web
+      spec:
+         containers:
+             - name: nginxcontainer
+               image: nginx
+               ports:
+                 - containerPort: 80
+
+
+change file to cheack update
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: myreplica
+spec:
+   replicas: 3
+   selector:
+     matchLabels:
+       app: web
+   template:
+      metadata:
+         labels:
+            app: web
+      spec:
+         containers:
+             - name: nginxcontainer
+               image: httpd
+               ports:
+                 - containerPort: 80
+
+---------------------------
+
+
+delete all thing in kubernates:
+  kubectl delete all --all
+
+
+
+.....
+
+
+
+
+
+
+
+

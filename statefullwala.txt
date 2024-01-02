@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+   name: statefulwali
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dev
+  template:
+    metadata:
+      labels:
+        app: dev
+    spec:
+      containers:
+         - image: mysql
+           name: mysqlcontainer
+           ports:
+            - containerPort: 3306
+           env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                    name: mysecret
+                    key: MYSQL_ROOT_PASSWORD
+           volumeMounts:
+                - name: mysqlwala
+                  mountPath: /var/lib/mysql
+      volumes:
+      - name: mysqlwala
+        persistentVolumeClaim:
+              claimName: pvcclaim

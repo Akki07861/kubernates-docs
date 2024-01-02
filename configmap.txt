@@ -1,0 +1,31 @@
+kubectl create configmap myconfig --from-literal=MYSQL_ROOT_PASSWORD=Pass@123
+
+configwala.yml
+
+==========================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: mydeployment
+spec:
+   replicas: 2
+   selector:
+     matchLabels:
+       app: web
+   template:
+      metadata:
+         labels:
+            app: web
+      spec:
+         containers:
+             - name: nginxcontainer
+               image: mysql
+               ports:
+                 - containerPort: 3306
+               env:
+                - name: MYSQL_ROOT_PASSWORD
+                  valueFrom:
+                     configMapKeyRef:
+                      name: myconfig
+                      key: MYSQL_ROOT_PASSWORD
