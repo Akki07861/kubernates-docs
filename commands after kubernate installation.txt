@@ -94,3 +94,4 @@ copy public ip of worker node in borwse as like
 make sure to add :NodePort port_id with ec2 public ip.
 
 ----
+
